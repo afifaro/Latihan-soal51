@@ -265,7 +265,7 @@
             </div>
 
             <div class="options-container" id="options-container">
-                </div>
+            </div>
 
             <div class="quiz-navigation">
                 <button class="btn btn-nav" id="btn-prev" onclick="prevQuestion()" disabled>Sebelumnya</button>
@@ -292,66 +292,67 @@
     </div>
 
     <script>
-        // Database 50 Soal Berdasarkan Bab 1 & Bab 2 Buku PAI Kelas 5
-        const questions = [
+        // Database Mentah 50 Soal Berdasarkan Bab 1 & Bab 2 Buku PAI Kelas 5
+        const rawQuestions = [
             // --- BAB 1 (Soal 1 - 25) ---
-            { q: "1. Arah penulisan huruf hijaiyah dimulai dari ....", options: ["Kiri ke kanan", "Atas ke bawah", "Kanan ke kiri", "Bawah ke atas"], ans: 2 },
-            { q: "2. Jumlah huruf hijaiyah tunggal secara umum adalah ....", options: ["26 huruf", "27 huruf", "28 huruf", "29 huruf"], ans: 3 },
-            { q: "3. Ilmu yang mempelajari tata cara membaca Al-Qur'an dengan benar sesuai kaidah disebut ....", options: ["Ilmu Tafsir", "Ilmu Tajwid", "Ilmu Fikih", "Ilmu Hadis"], ans: 1 },
-            { q: "4. Membaca Al-Qur'an secara perlahan, jelas, dan benar sesuai hukum tajwid dinamakan ....", options: ["Tartil", "Tilawah", "Tahsin", "Tadarus"], ans: 0 },
-            { q: "5. Huruf Mim Sukun ditandai dengan harakat berbentuk ....", options: ["Fathah", "Kasrah", "Dammah", "Sukun"], ans: 3 },
-            { q: "6. Apabila Mim Sukun bertemu dengan huruf Ba (ب), maka hukum bacaannya adalah ....", options: ["Idzhar Syafawi", "Idgham Mimi", "Ikhfa Syafawi", "Qalqalah"], ans: 2 },
-            { q: "7. Apabila Mim Sukun bertemu dengan huruf Mim (م), hukum bacaannya dinamakan ....", options: ["Ikhfa Syafawi", "Idgham Mimi (Mitslain)", "Idzhar Syafawi", "Mad Wajib"], ans: 1 },
-            { q: "8. Hukum Idzhar Syafawi terjadi apabila Mim Sukun bertemu dengan huruf hijaiyah selain ....", options: ["Mim dan Ba", "Alif dan Lam", "Nun dan Mim", "Khaf dan Qaf"], ans: 0 },
-            { q: "9. Cara membaca hukum tajwid Ikhfa Syafawi yang benar adalah ....", options: ["Jelas tanpa dengung", "Dipantulkan", "Samar-samar disertai dengung 2 harakat", "Dipanjangkan 6 harakat"], ans: 2 },
-            { q: "10. Cara membaca hukum Idgham Mimi adalah ....", options: ["Dibaca jelas", "Meleburkan Mim pertama ke Mim kedua disertai dengung", "Dipantulkan", "Dibaca putus-putus"], ans: 1 },
-            { q: "11. Salah satu tujuan utama mempelajari ilmu tajwid adalah ....", options: ["Mempercepat durasi membaca", "Menjaga kemurnian dan keaslian bacaan Al-Qur'an", "Menghafal seluruh isi juz amma", "Agar dipuji oleh guru"], ans: 1 },
-            { q: "12. Arti kata 'Syafawi' dalam istilah tajwid berkaitan dengan bagian anggota tubuh yaitu ....", options: ["Tenggorokan", "Kedua bibir", "Lidah", "Rongga hidung"], ans: 1 },
-            { q: "13. Lafal (هُمْ فِيهَا) merupakan salah satu contoh dari hukum bacaan ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Iqlab"], ans: 0 },
-            { q: "14. Contoh lafal (تَرْمِيهِمْ بِحِجَارَةٍ) mengandung hukum bacaan ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Idgham Bighunnah"], ans: 1 },
-            { q: "15. Lafal (لَهُمْ مَا) mengandung hukum bacaan ....", options: ["Ikhfa Syafawi", "Idzhar Halqi", "Idgham Mimi", "Idzhar Syafawi"], ans: 2 },
-            { q: "16. Al-Qur'an diturunkan oleh Allah Swt. sebagai petunjuk hidup bagi ....", options: ["Umat terdahulu saja", "Seluruh umat manusia", "Malaikat", "Golongan tertentu"], ans: 1 },
-            { q: "17. Sabda Nabi SAW: 'Sebaik-baik kalian adalah orang yang mempelajari Al-Qur'an dan ....'", options: ["Menyimpannya", "Mengajarkannya", "Menjualnya", "Pamer kepadanya"], ans: 1 },
-            { q: "18. Langkah pertama saat melatih membaca rangkaian kata hijaiyah bersambung adalah ....", options: ["Langsung membaca cepat", "Mengenali setiap huruf dan harakatnya", "Menebak bacaan", "Membaca dari kiri"], ans: 1 },
-            { q: "19. Menulis kalimat hijaiyah bersambung memerlukan ketelitian karena penulisan diawali dari ....", options: ["Atas ke bawah", "Tengah", "Kanan ke kiri", "Kiri ke kanan"], ans: 2 },
-            { q: "20. Apabila bacaan Al-Qur'an dibaca tanpa ilmu tajwid yang benar, dikhawatirkan dapat ....", options: ["Memperindah suara", "Mengubah arti/makna ayat", "Mempercepat waktu", "Menambah pahala"], ans: 1 },
-            { q: "21. Mengucapkan Mim Sukun secara samar dengan bibir tetap rapat dan berdengung adalah ciri ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Iqlab"], ans: 1 },
-            { q: "22. Mengucapkan Mim Sukun secara jelas dan tidak berdengung dinamakan ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Ikhfa Hakiki"], ans: 0 },
-            { q: "23. Salah satu hikmah membiasakan membaca Al-Qur'an sesuai tajwid adalah ....", options: ["Menjadi lebih percaya diri dan mendapat pahala", "Menjadi cepat lelah", "Agar dianggap hebat oleh teman", "Mengurangi waktu belajar"], ans: 0 },
-            { q: "24. Posisi huruf hijaiyah dalam kata Arab dapat berubah bentuk pada ....", options: ["Awal, tengah, dan akhir kata", "Awal kata saja", "Akhir kata saja", "Tengah kata saja"], ans: 0 },
-            { q: "25. Pengertian 'Tartil' dalam QS. Al-Muzzammil ayat 4 adalah membaca Al-Qur'an dengan ....", options: ["Sangat cepat", "Perlahan, jelas, dan sesuai hukum tajwid", "Berteriak nyaring", "Suara berbisik"], ans: 1 },
+            { q: "Arah penulisan huruf hijaiyah dimulai dari ....", options: ["Kiri ke kanan", "Atas ke bawah", "Kanan ke kiri", "Bawah ke atas"], ans: 2 },
+            { q: "Jumlah huruf hijaiyah tunggal secara umum adalah ....", options: ["26 huruf", "27 huruf", "28 huruf", "29 huruf"], ans: 3 },
+            { q: "Ilmu yang mempelajari tata cara membaca Al-Qur'an dengan benar sesuai kaidah disebut ....", options: ["Ilmu Tafsir", "Ilmu Tajwid", "Ilmu Fikih", "Ilmu Hadis"], ans: 1 },
+            { q: "Membaca Al-Qur'an secara perlahan, jelas, dan benar sesuai hukum tajwid dinamakan ....", options: ["Tartil", "Tilawah", "Tahsin", "Tadarus"], ans: 0 },
+            { q: "Huruf Mim Sukun ditandai dengan harakat berbentuk ....", options: ["Fathah", "Kasrah", "Dammah", "Sukun"], ans: 3 },
+            { q: "Apabila Mim Sukun bertemu dengan huruf Ba (ب), maka hukum bacaannya adalah ....", options: ["Idzhar Syafawi", "Idgham Mimi", "Ikhfa Syafawi", "Qalqalah"], ans: 2 },
+            { q: "Apabila Mim Sukun bertemu dengan huruf Mim (م), hukum bacaannya dinamakan ....", options: ["Ikhfa Syafawi", "Idgham Mimi (Mitslain)", "Idzhar Syafawi", "Mad Wajib"], ans: 1 },
+            { q: "Hukum Idzhar Syafawi terjadi apabila Mim Sukun bertemu dengan huruf hijaiyah selain ....", options: ["Mim dan Ba", "Alif dan Lam", "Nun dan Mim", "Khaf dan Qaf"], ans: 0 },
+            { q: "Cara membaca hukum tajwid Ikhfa Syafawi yang benar adalah ....", options: ["Jelas tanpa dengung", "Dipantulkan", "Samar-samar disertai dengung 2 harakat", "Dipanjangkan 6 harakat"], ans: 2 },
+            { q: "Cara membaca hukum Idgham Mimi adalah ....", options: ["Dibaca jelas", "Meleburkan Mim pertama ke Mim kedua disertai dengung", "Dipantulkan", "Dibaca putus-putus"], ans: 1 },
+            { q: "Salah satu tujuan utama mempelajari ilmu tajwid adalah ....", options: ["Mempercepat durasi membaca", "Menjaga kemurnian dan keaslian bacaan Al-Qur'an", "Menghafal seluruh isi juz amma", "Agar dipuji oleh guru"], ans: 1 },
+            { q: "Arti kata 'Syafawi' dalam istilah tajwid berkaitan dengan bagian anggota tubuh yaitu ....", options: ["Tenggorokan", "Kedua bibir", "Lidah", "Rongga hidung"], ans: 1 },
+            { q: "Lafal (هُمْ فِيهَا) merupakan salah satu contoh dari hukum bacaan ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Iqlab"], ans: 0 },
+            { q: "Contoh lafal (تَرْمِيهِمْ بِحِجَارَةٍ) mengandung hukum bacaan ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Idgham Bighunnah"], ans: 1 },
+            { q: "Lafal (لَهُمْ مَا) mengandung hukum bacaan ....", options: ["Ikhfa Syafawi", "Idzhar Halqi", "Idgham Mimi", "Idzhar Syafawi"], ans: 2 },
+            { q: "Al-Qur'an diturunkan oleh Allah Swt. sebagai petunjuk hidup bagi ....", options: ["Umat terdahulu saja", "Seluruh umat manusia", "Malaikat", "Golongan tertentu"], ans: 1 },
+            { q: "Sabda Nabi SAW: 'Sebaik-baik kalian adalah orang yang mempelajari Al-Qur'an dan ....'", options: ["Menyimpannya", "Mengajarkannya", "Menjualnya", "Pamer kepadanya"], ans: 1 },
+            { q: "Langkah pertama saat melatih membaca rangkaian kata hijaiyah bersambung adalah ....", options: ["Langsung membaca cepat", "Mengenali setiap huruf dan harakatnya", "Menebak bacaan", "Membaca dari kiri"], ans: 1 },
+            { q: "Menulis kalimat hijaiyah bersambung memerlukan ketelitian karena penulisan diawali dari ....", options: ["Atas ke bawah", "Tengah", "Kanan ke kiri", "Kiri ke kanan"], ans: 2 },
+            { q: "Apabila bacaan Al-Qur'an dibaca tanpa ilmu tajwid yang benar, dikhawatirkan dapat ....", options: ["Memperindah suara", "Mengubah arti/makna ayat", "Mempercepat waktu", "Menambah pahala"], ans: 1 },
+            { q: "Mengucapkan Mim Sukun secara samar dengan bibir tetap rapat dan berdengung adalah ciri ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Iqlab"], ans: 1 },
+            { q: "Mengucapkan Mim Sukun secara jelas dan tidak berdengung dinamakan ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Ikhfa Hakiki"], ans: 0 },
+            { q: "Salah satu hikmah membiasakan membaca Al-Qur'an sesuai tajwid adalah ....", options: ["Menjadi lebih percaya diri dan mendapat pahala", "Menjadi cepat lelah", "Agar dianggap hebat oleh teman", "Mengurangi waktu belajar"], ans: 0 },
+            { q: "Posisi huruf hijaiyah dalam kata Arab dapat berubah bentuk pada ....", options: ["Awal, tengah, dan akhir kata", "Awal kata saja", "Akhir kata saja", "Tengah kata saja"], ans: 0 },
+            { q: "Pengertian 'Tartil' dalam QS. Al-Muzzammil ayat 4 adalah membaca Al-Qur'an dengan ....", options: ["Sangat cepat", "Perlahan, jelas, dan sesuai hukum tajwid", "Berteriak nyaring", "Suara berbisik"], ans: 1 },
 
             // --- BAB 2 (Soal 26 - 50) ---
-            { q: "26. Surat Al-'Asr dalam Al-Qur'an merupakan urutan surat yang ke-....", options: ["101", "102", "103", "104"], ans: 2 },
-            { q: "27. Surat Al-'Asr terdiri dari ....", options: ["2 ayat", "3 ayat", "4 ayat", "5 ayat"], ans: 1 },
-            { q: "28. Surat Al-'Asr tergolong ke dalam jenis Surat Makkiyah karena diturunkan ....", options: ["Setelah Nabi hijrah ke Madinah", "Sebelum Nabi hijrah ke Madinah", "Di kota Yerusalem", "Saat perang Badar"], ans: 1 },
-            { q: "29. Kata 'Al-'Asr' secara bahasa memiliki arti ....", options: ["Pagi hari", "Masa atau waktu", "Malam hari", "Pertolongan"], ans: 1 },
-            { q: "30. Pada ayat pertama Surat Al-'Asr, Allah Swt. bersumpah demi ....", options: ["Matahari", "Waktu/Masa", "Bulan", "Langit"], ans: 1 },
-            { q: "31. Menurut pesan Surat Al-'Asr, pada dasarnya seluruh manusia berada dalam keadaan ....", options: ["Keuntungan", "Kerugian", "Kecukupan", "Kemuliaan"], ans: 1 },
-            { q: "32. Orang yang terhindar dari kerugian menurut Surat Al-'Asr adalah orang yang beriman dan ....", options: ["Mengumpulkan harta", "Beramal saleh", "Bermalas-malasan", "Menuntut ilmu tanpa beramal"], ans: 1 },
-            { q: "33. Selain beriman dan beramal saleh, orang beruntung adalah mereka yang saling menasihati dalam ....", options: ["Kebenaran dan kesabaran", "Permainan", "Kekayaan", "Kemewahan"], ans: 0 },
-            { q: "34. Pendapat ulama besar Imam Asy-Syafi'i tentang Surat Al-'Asr adalah ....", options: ["Surat yang paling panjang", "Kandungannya cukup menjadi pelajaran hidup bagi manusia", "Hanya berlaku untuk umat terdahulu", "Surat yang sulit dipahami"], ans: 1 },
-            { q: "35. Arti dari ayat kedua 'Innal insāna lafī khusr' adalah ....", options: ["Demi masa", "Sungguh manusia berada dalam kerugian", "Kecuali orang yang beriman", "Dan saling menasihati dalam kesabaran"], ans: 1 },
-            { q: "36. Waktu adalah nikmat Allah yang sangat berharga karena waktu yang telah berlalu ....", options: ["Bisa dibeli kembali", "Tidak akan pernah kembali lagi", "Dapat diulang sewaktu-waktu", "Selalu berhenti"], ans: 1 },
-            { q: "37. Contoh perbuatan yang menunjukkan amal saleh bagi seorang siswa adalah ....", options: ["Menyontek saat ujian", "Belajar tekun dan membantu teman", "Tidur saat jam pelajaran", "Bermain game seharian"], ans: 1 },
-            { q: "38. Mengingatkan teman agar melaksanakan salat tepat waktu merupakan contoh dari ....", options: ["Saling menasihati dalam kebenaran", "Memusuhi teman", "Mencampuri urusan orang", "Saling menasihati dalam kejahatan"], ans: 0 },
-            { q: "39. Sikap yang tepat saat menghadapi kesulitan belajar atau kegagalan adalah ....", options: ["Marah dan putus asa", "Bersabar dan terus berusaha", "Menyalahkan guru", "Berhenti sekolah"], ans: 1 },
-            { q: "40. Mengatur jadwal harian untuk belajar, beribadah, dan istirahat merupakan bentuk penerapan ....", options: ["Menghargai waktu", "Membuang waktu", "Pola hidup malas", "Sikap egois"], ans: 0 },
-            { q: "41. Berikut yang BUKAN merupakan syarat terhindar dari kerugian dalam Surat Al-'Asr adalah ....", options: ["Beriman kepada Allah", "Mengerjakan kebajikan (amal saleh)", "Menimbun harta kekayaan", "Saling menasihati dalam kesabaran"], ans: 2 },
-            { q: "42. Menasihati teman yang berbuat salah hendaknya dilakukan dengan cara ....", options: ["Kasar dan membentak", "Sopan, santun, dan kasih sayang", "Mengejek di depan umum", "Memukulnya"], ans: 1 },
-            { q: "43. Kerugian manusia yang dimaksud dalam Surat Al-'Asr bukan hanya kehilangan harta, melainkan ....", options: ["Kehilangan HP", "Kehilangan kesempatan berbuat baik dan pahala", "Kehilangan nilai bagus", "Kehilangan makanan"], ans: 1 },
-            { q: "44. Sikap disiplin tepat waktu saat datang ke sekolah merupakan cerminan dari ....", options: ["Pengamalan Surat Al-'Asr", "Perilaku sombong", "Rasa takut kepada teman", "Tindakan terpaksa"], ans: 0 },
-            { q: "45. Saling menasihati dalam kesabaran dapat diwujudkan dalam bentuk ....", options: ["Menyemangati teman yang sedang tertimpa musibah", "Menertawakan teman yang jatuh", "Biarkan teman menangis sendiri", "Mengompori teman agar marah"], ans: 0 },
-            { q: "46. Amal saleh yang kecil seperti tersenyum dan menyapa teman akan bernilai ibadah jika ....", options: ["Diniatkan ikhlas karena Allah Swt.", "Dipamerkan di media sosial", "Meminta imbalan uang", "Dilakukan dengan terpaksa"], ans: 0 },
-            { q: "47. Orang yang suka menunda-nunda pekerjaan rumah (PR) termasuk orang yang ....", options: ["Sangat bijaksana", "Menyia-nyiakan waktu", "Memanfaatkan waktu", "Sangat pintar"], ans: 1 },
-            { q: "48. Syarat pertama dari 4 syarat keselamatan manusia dalam Surat Al-'Asr adalah ....", options: ["Beramal saleh", "Beriman kepada Allah Swt.", "Saling menasihati", "Bersabar"], ans: 1 },
-            { q: "49. Salah satu manfaat utama dari mempelajari Surat Al-'Asr adalah ....", options: ["Menumbuhkan rasa menyayang waktu dan disiplin", "Menjadi cepat kaya", "Mendapatkan banyak mainan", "Tidak perlu belajar lagi"], ans: 0 },
-            { q: "50. Kebiasaan membaca Al-Qur'an dan mengamalkan reaches keberkahan hidup di ....", options: ["Dunia saja", "Akhirat saja", "Dunia dan akhirat", "Tidak ada di mana-mana"], ans: 2 }
+            { q: "Surat Al-'Asr dalam Al-Qur'an merupakan urutan surat yang ke-....", options: ["101", "102", "103", "104"], ans: 2 },
+            { q: "Surat Al-'Asr terdiri dari ....", options: ["2 ayat", "3 ayat", "4 ayat", "5 ayat"], ans: 1 },
+            { q: "Surat Al-'Asr tergolong ke dalam jenis Surat Makkiyah karena diturunkan ....", options: ["Setelah Nabi hijrah ke Madinah", "Sebelum Nabi hijrah ke Madinah", "Di kota Yerusalem", "Saat perang Badar"], ans: 1 },
+            { q: "Kata 'Al-'Asr' secara bahasa memiliki arti ....", options: ["Pagi hari", "Masa atau waktu", "Malam hari", "Pertolongan"], ans: 1 },
+            { q: "Pada ayat pertama Surat Al-'Asr, Allah Swt. bersumpah demi ....", options: ["Matahari", "Waktu/Masa", "Bulan", "Langit"], ans: 1 },
+            { q: "Menurut pesan Surat Al-'Asr, pada dasarnya seluruh manusia berada dalam keadaan ....", options: ["Keuntungan", "Kerugian", "Kecukupan", "Kemuliaan"], ans: 1 },
+            { q: "Orang yang terhindar dari kerugian menurut Surat Al-'Asr adalah orang yang beriman dan ....", options: ["Mengumpulkan harta", "Beramal saleh", "Bermalas-malasan", "Menuntut ilmu tanpa beramal"], ans: 1 },
+            { q: "Selain beriman dan beramal saleh, orang beruntung adalah mereka yang saling menasihati dalam ....", options: ["Kebenaran dan kesabaran", "Permainan", "Kekayaan", "Kemewahan"], ans: 0 },
+            { q: "Pendapat ulama besar Imam Asy-Syafi'i tentang Surat Al-'Asr adalah ....", options: ["Surat yang paling panjang", "Kandungannya cukup menjadi pelajaran hidup bagi manusia", "Hanya berlaku untuk umat terdahulu", "Surat yang sulit dipahami"], ans: 1 },
+            { q: "Arti dari ayat kedua 'Innal insāna lafī khusr' adalah ....", options: ["Demi masa", "Sungguh manusia berada dalam kerugian", "Kecuali orang yang beriman", "Dan saling menasihati dalam kesabaran"], ans: 1 },
+            { q: "Waktu adalah nikmat Allah yang sangat berharga karena waktu yang telah berlalu ....", options: ["Bisa dibeli kembali", "Tidak akan pernah kembali lagi", "Dapat diulang sewaktu-waktu", "Selalu berhenti"], ans: 1 },
+            { q: "Contoh perbuatan yang menunjukkan amal saleh bagi seorang siswa adalah ....", options: ["Menyontek saat ujian", "Belajar tekun dan membantu teman", "Tidur saat jam pelajaran", "Bermain game seharian"], ans: 1 },
+            { q: "Mengingatkan teman agar melaksanakan salat tepat waktu merupakan contoh dari ....", options: ["Saling menasihati dalam kebenaran", "Memusuhi teman", "Mencampuri urusan orang", "Saling menasihati dalam kejahatan"], ans: 0 },
+            { q: "Sikap yang tepat saat menghadapi kesulitan belajar atau kegagalan adalah ....", options: ["Marah dan putus asa", "Bersabar dan terus berusaha", "Menyalahkan guru", "Berhenti sekolah"], ans: 1 },
+            { q: "Mengatur jadwal harian untuk belajar, beribadah, dan istirahat merupakan bentuk penerapan ....", options: ["Menghargai waktu", "Membuang waktu", "Pola hidup malas", "Sikap egois"], ans: 0 },
+            { q: "Berikut yang BUKAN merupakan syarat terhindar dari kerugian dalam Surat Al-'Asr adalah ....", options: ["Beriman kepada Allah", "Mengerjakan kebajikan (amal saleh)", "Menimbun harta kekayaan", "Saling menasihati dalam kesabaran"], ans: 2 },
+            { q: "Menasihati teman yang berbuat salah hendaknya dilakukan dengan cara ....", options: ["Kasar dan membentak", "Sopan, santun, dan kasih sayang", "Mengejek di depan umum", "Memukulnya"], ans: 1 },
+            { q: "Kerugian manusia yang dimaksud dalam Surat Al-'Asr bukan hanya kehilangan harta, melainkan ....", options: ["Kehilangan HP", "Kehilangan kesempatan berbuat baik dan pahala", "Kehilangan nilai bagus", "Kehilangan makanan"], ans: 1 },
+            { q: "Sikap disiplin tepat waktu saat datang ke sekolah merupakan cerminan dari ....", options: ["Pengamalan Surat Al-'Asr", "Perilaku sombong", "Rasa takut kepada teman", "Tindakan terpaksa"], ans: 0 },
+            { q: "Saling menasihati dalam kesabaran dapat diwujudkan dalam bentuk ....", options: ["Menyemangati teman yang sedang tertimpa musibah", "Menertawakan teman yang jatuh", "Biarkan teman menangis sendiri", "Mengompori teman agar marah"], ans: 0 },
+            { q: "Amal saleh yang kecil seperti tersenyum dan menyapa teman akan bernilai ibadah jika ....", options: ["Diniatkan ikhlas karena Allah Swt.", "Dipamerkan di media sosial", "Meminta imbalan uang", "Dilakukan dengan terpaksa"], ans: 0 },
+            { q: "Orang yang suka menunda-nunda pekerjaan rumah (PR) termasuk orang yang ....", options: ["Sangat bijaksana", "Menyia-nyiakan waktu", "Memanfaatkan waktu", "Sangat pintar"], ans: 1 },
+            { q: "Syarat pertama dari 4 syarat keselamatan manusia dalam Surat Al-'Asr adalah ....", options: ["Beramal saleh", "Beriman kepada Allah Swt.", "Saling menasihati", "Bersabar"], ans: 1 },
+            { q: "Salah satu manfaat utama dari mempelajari Surat Al-'Asr adalah ....", options: ["Menumbuhkan rasa menyayang waktu dan disiplin", "Menjadi cepat kaya", "Mendapatkan banyak mainan", "Tidak perlu belajar lagi"], ans: 0 },
+            { q: "Kebiasaan membaca Al-Qur'an dan mengamalkan reaches keberkahan hidup di ....", options: ["Dunia saja", "Akhirat saja", "Dunia dan akhirat", "Tidak ada di mana-mana"], ans: 2 }
         ];
 
         // Global State Variables
+        let questions = [];
         let currentQuestionIndex = 0;
-        let studentAnswers = new Array(questions.length).fill(null);
+        let studentAnswers = [];
         let studentName = "";
         let studentClass = "";
 
@@ -361,6 +362,41 @@
         const resultScreen = document.getElementById('result-screen');
         const startForm = document.getElementById('start-form');
 
+        // Fungsi Helper: Shuffle Array (Fisher-Yates Algorithm)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Fungsi Menyiapkan & Mengacak Soal + Opsi Jawaban
+        function prepareRandomizedQuestions() {
+            // Duplikat array soal utama
+            let shuffledList = JSON.parse(JSON.stringify(rawQuestions));
+            
+            // 1. Acak Urutan Soal
+            shuffleArray(shuffledList);
+
+            // 2. Acak Opsi Jawaban Setiap Soal
+            questions = shuffledList.map(item => {
+                const correctAnswerText = item.options[item.ans];
+                // Acak opsi
+                shuffleArray(item.options);
+                // Dapatkan indeks jawaban benar yang baru setelah opsi diacak
+                const newAnsIndex = item.options.indexOf(correctAnswerText);
+                return {
+                    q: item.q,
+                    options: item.options,
+                    ans: newAnsIndex
+                };
+            });
+
+            // Reset array jawaban siswa
+            studentAnswers = new Array(questions.length).fill(null);
+        }
+
         // Form Submit Handler
         startForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -369,6 +405,9 @@
             
             document.getElementById('display-student').innerText = `Siswa: ${studentName} (${studentClass})`;
             
+            // Acak Soal dan Opsi sebelum kuis dimulai
+            prepareRandomizedQuestions();
+
             startScreen.classList.remove('active');
             quizScreen.classList.add('active');
             
@@ -382,8 +421,8 @@
             // Set Progress Text
             document.getElementById('question-progress').innerText = `Soal ${currentQuestionIndex + 1} dari ${questions.length}`;
             
-            // Set Question Text
-            document.getElementById('question-text').innerText = currentQ.q;
+            // Set Question Text dengan Penomoran Dinamis 1 - 50
+            document.getElementById('question-text').innerText = `${currentQuestionIndex + 1}. ${currentQ.q}`;
             
             // Render Options
             const optionsContainer = document.getElementById('options-container');
@@ -481,10 +520,9 @@
             resultScreen.classList.add('active');
         }
 
-        // Restart Quiz
+        // Restart Quiz (Reset & Acak Ulang)
         function restartQuiz() {
             currentQuestionIndex = 0;
-            studentAnswers = new Array(questions.length).fill(null);
             
             resultScreen.classList.remove('active');
             startScreen.classList.add('active');
