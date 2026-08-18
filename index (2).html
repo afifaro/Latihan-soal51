@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Interaktif PAI Kelas V - Bab 1 & 2</title>
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --primary-hover: #1b5e20;
+            --secondary-color: #e8f5e9;
+            --accent-color: #fbc02d;
+            --text-color: #333;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --correct-color: #4caf50;
+            --wrong-color: #f44336;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Screen Styles */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Start Screen */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Quiz Header */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: var(--secondary-color);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Question Box */
+        .question-title {
+            font-size: 1.15rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .option {
+            background-color: #fff;
+            border: 2px solid #e0e0e0;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            border-color: var(--primary-color);
+            background-color: var(--secondary-color);
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background-color: var(--secondary-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            width: 48%;
+            background-color: #555;
+        }
+
+        .btn-nav:hover {
+            background-color: #333;
+        }
+
+        .btn-next {
+            background-color: var(--primary-color);
+        }
+
+        /* Result Screen */
+        .result-box {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 20px auto;
+            border: 4px solid var(--primary-color);
+        }
+
+        .result-details {
+            margin: 20px 0;
+            font-size: 1.1rem;
+            text-align: left;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .result-details p {
+            margin-bottom: 8px;
+        }
+
+        /* Arabic Text Styling */
+        .arabic {
+            font-family: 'Traditional Arabic', 'Amiri', 'Segoe UI', serif;
+            font-size: 1.3rem;
+            direction: rtl;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            header h1 {
+                font-size: 1.4rem;
+            }
+            .question-title {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Evaluasi Pembelajaran PAI & Budi Pekerti</h1>
+            <p>Kelas V SD | Bab 1 (Huruf Hijaiyah & Mim Sukun) & Bab 2 (Surat Al-'Asr)</p>
+        </header>
+
+        <div id="start-screen" class="screen active">
+            <form id="start-form">
+                <div class="form-group">
+                    <label for="student-name">Nama Lengkap Siswa:</label>
+                    <input type="text" id="student-name" placeholder="Masukkan nama Anda..." required>
+                </div>
+                <div class="form-group">
+                    <label for="student-class">Kelas / Absen:</label>
+                    <input type="text" id="student-class" placeholder="Contoh: V-A / 12" required>
+                </div>
+                <button type="submit" class="btn">Mulai Mengerjakan Soal (50 Soal)</button>
+            </form>
+        </div>
+
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <span id="display-student">Siswa: -</span>
+                <span id="question-progress">Soal 1 dari 50</span>
+            </div>
+
+            <div class="question-title" id="question-text">
+                Pertanyaan akan muncul di sini...
+            </div>
+
+            <div class="options-container" id="options-container">
+                </div>
+
+            <div class="quiz-navigation">
+                <button class="btn btn-nav" id="btn-prev" onclick="prevQuestion()" disabled>Sebelumnya</button>
+                <button class="btn btn-next" id="btn-next" onclick="nextQuestion()">Berikutnya</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="screen">
+            <div class="result-box">
+                <h2>Hasil Evaluasi</h2>
+                <div class="score-circle" id="score-display">0</div>
+                
+                <div class="result-details">
+                    <p><strong>Nama:</strong> <span id="res-name">-</span></p>
+                    <p><strong>Kelas/Absen:</strong> <span id="res-class">-</span></p>
+                    <p><strong>Jumlah Benar:</strong> <span id="res-correct">0</span> / 50</p>
+                    <p><strong>Jumlah Salah:</strong> <span id="res-wrong">0</span> / 50</p>
+                    <p><strong>Status:</strong> <span id="res-status">-</span></p>
+                </div>
+
+                <button class="btn" onclick="restartQuiz()">Ulangi Ujian</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Database 50 Soal Berdasarkan Bab 1 & Bab 2 Buku PAI Kelas 5
+        const questions = [
+            // --- BAB 1 (Soal 1 - 25) ---
+            { q: "1. Arah penulisan huruf hijaiyah dimulai dari ....", options: ["Kiri ke kanan", "Atas ke bawah", "Kanan ke kiri", "Bawah ke atas"], ans: 2 },
+            { q: "2. Jumlah huruf hijaiyah tunggal secara umum adalah ....", options: ["26 huruf", "27 huruf", "28 huruf", "29 huruf"], ans: 3 },
+            { q: "3. Ilmu yang mempelajari tata cara membaca Al-Qur'an dengan benar sesuai kaidah disebut ....", options: ["Ilmu Tafsir", "Ilmu Tajwid", "Ilmu Fikih", "Ilmu Hadis"], ans: 1 },
+            { q: "4. Membaca Al-Qur'an secara perlahan, jelas, dan benar sesuai hukum tajwid dinamakan ....", options: ["Tartil", "Tilawah", "Tahsin", "Tadarus"], ans: 0 },
+            { q: "5. Huruf Mim Sukun ditandai dengan harakat berbentuk ....", options: ["Fathah", "Kasrah", "Dammah", "Sukun"], ans: 3 },
+            { q: "6. Apabila Mim Sukun bertemu dengan huruf Ba (ب), maka hukum bacaannya adalah ....", options: ["Idzhar Syafawi", "Idgham Mimi", "Ikhfa Syafawi", "Qalqalah"], ans: 2 },
+            { q: "7. Apabila Mim Sukun bertemu dengan huruf Mim (م), hukum bacaannya dinamakan ....", options: ["Ikhfa Syafawi", "Idgham Mimi (Mitslain)", "Idzhar Syafawi", "Mad Wajib"], ans: 1 },
+            { q: "8. Hukum Idzhar Syafawi terjadi apabila Mim Sukun bertemu dengan huruf hijaiyah selain ....", options: ["Mim dan Ba", "Alif dan Lam", "Nun dan Mim", "Khaf dan Qaf"], ans: 0 },
+            { q: "9. Cara membaca hukum tajwid Ikhfa Syafawi yang benar adalah ....", options: ["Jelas tanpa dengung", "Dipantulkan", "Samar-samar disertai dengung 2 harakat", "Dipanjangkan 6 harakat"], ans: 2 },
+            { q: "10. Cara membaca hukum Idgham Mimi adalah ....", options: ["Dibaca jelas", "Meleburkan Mim pertama ke Mim kedua disertai dengung", "Dipantulkan", "Dibaca putus-putus"], ans: 1 },
+            { q: "11. Salah satu tujuan utama mempelajari ilmu tajwid adalah ....", options: ["Mempercepat durasi membaca", "Menjaga kemurnian dan keaslian bacaan Al-Qur'an", "Menghafal seluruh isi juz amma", "Agar dipuji oleh guru"], ans: 1 },
+            { q: "12. Arti kata 'Syafawi' dalam istilah tajwid berkaitan dengan bagian anggota tubuh yaitu ....", options: ["Tenggorokan", "Kedua bibir", "Lidah", "Rongga hidung"], ans: 1 },
+            { q: "13. Lafal (هُمْ فِيهَا) merupakan salah satu contoh dari hukum bacaan ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Iqlab"], ans: 0 },
+            { q: "14. Contoh lafal (تَرْمِيهِمْ بِحِجَارَةٍ) mengandung hukum bacaan ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Idgham Bighunnah"], ans: 1 },
+            { q: "15. Lafal (لَهُمْ مَا) mengandung hukum bacaan ....", options: ["Ikhfa Syafawi", "Idzhar Halqi", "Idgham Mimi", "Idzhar Syafawi"], ans: 2 },
+            { q: "16. Al-Qur'an diturunkan oleh Allah Swt. sebagai petunjuk hidup bagi ....", options: ["Umat terdahulu saja", "Seluruh umat manusia", "Malaikat", "Golongan tertentu"], ans: 1 },
+            { q: "17. Sabda Nabi SAW: 'Sebaik-baik kalian adalah orang yang mempelajari Al-Qur'an dan ....'", options: ["Menyimpannya", "Mengajarkannya", "Menjualnya", "Pamer kepadanya"], ans: 1 },
+            { q: "18. Langkah pertama saat melatih membaca rangkaian kata hijaiyah bersambung adalah ....", options: ["Langsung membaca cepat", "Mengenali setiap huruf dan harakatnya", "Menebak bacaan", "Membaca dari kiri"], ans: 1 },
+            { q: "19. Menulis kalimat hijaiyah bersambung memerlukan ketelitian karena penulisan diawali dari ....", options: ["Atas ke bawah", "Tengah", "Kanan ke kiri", "Kiri ke kanan"], ans: 2 },
+            { q: "20. Apabila bacaan Al-Qur'an dibaca tanpa ilmu tajwid yang benar, dikhawatirkan dapat ....", options: ["Memperindah suara", "Mengubah arti/makna ayat", "Mempercepat waktu", "Menambah pahala"], ans: 1 },
+            { q: "21. Mengucapkan Mim Sukun secara samar dengan bibir tetap rapat dan berdengung adalah ciri ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Iqlab"], ans: 1 },
+            { q: "22. Mengucapkan Mim Sukun secara jelas dan tidak berdengung dinamakan ....", options: ["Idzhar Syafawi", "Ikhfa Syafawi", "Idgham Mimi", "Ikhfa Hakiki"], ans: 0 },
+            { q: "23. Salah satu hikmah membiasakan membaca Al-Qur'an sesuai tajwid adalah ....", options: ["Menjadi lebih percaya diri dan mendapat pahala", "Menjadi cepat lelah", "Agar dianggap hebat oleh teman", "Mengurangi waktu belajar"], ans: 0 },
+            { q: "24. Posisi huruf hijaiyah dalam kata Arab dapat berubah bentuk pada ....", options: ["Awal, tengah, dan akhir kata", "Awal kata saja", "Akhir kata saja", "Tengah kata saja"], ans: 0 },
+            { q: "25. Pengertian 'Tartil' dalam QS. Al-Muzzammil ayat 4 adalah membaca Al-Qur'an dengan ....", options: ["Sangat cepat", "Perlahan, jelas, dan sesuai hukum tajwid", "Berteriak nyaring", "Suara berbisik"], ans: 1 },
+
+            // --- BAB 2 (Soal 26 - 50) ---
+            { q: "26. Surat Al-'Asr dalam Al-Qur'an merupakan urutan surat yang ke-....", options: ["101", "102", "103", "104"], ans: 2 },
+            { q: "27. Surat Al-'Asr terdiri dari ....", options: ["2 ayat", "3 ayat", "4 ayat", "5 ayat"], ans: 1 },
+            { q: "28. Surat Al-'Asr tergolong ke dalam jenis Surat Makkiyah karena diturunkan ....", options: ["Setelah Nabi hijrah ke Madinah", "Sebelum Nabi hijrah ke Madinah", "Di kota Yerusalem", "Saat perang Badar"], ans: 1 },
+            { q: "29. Kata 'Al-'Asr' secara bahasa memiliki arti ....", options: ["Pagi hari", "Masa atau waktu", "Malam hari", "Pertolongan"], ans: 1 },
+            { q: "30. Pada ayat pertama Surat Al-'Asr, Allah Swt. bersumpah demi ....", options: ["Matahari", "Waktu/Masa", "Bulan", "Langit"], ans: 1 },
+            { q: "31. Menurut pesan Surat Al-'Asr, pada dasarnya seluruh manusia berada dalam keadaan ....", options: ["Keuntungan", "Kerugian", "Kecukupan", "Kemuliaan"], ans: 1 },
+            { q: "32. Orang yang terhindar dari kerugian menurut Surat Al-'Asr adalah orang yang beriman dan ....", options: ["Mengumpulkan harta", "Beramal saleh", "Bermalas-malasan", "Menuntut ilmu tanpa beramal"], ans: 1 },
+            { q: "33. Selain beriman dan beramal saleh, orang beruntung adalah mereka yang saling menasihati dalam ....", options: ["Kebenaran dan kesabaran", "Permainan", "Kekayaan", "Kemewahan"], ans: 0 },
+            { q: "34. Pendapat ulama besar Imam Asy-Syafi'i tentang Surat Al-'Asr adalah ....", options: ["Surat yang paling panjang", "Kandungannya cukup menjadi pelajaran hidup bagi manusia", "Hanya berlaku untuk umat terdahulu", "Surat yang sulit dipahami"], ans: 1 },
+            { q: "35. Arti dari ayat kedua 'Innal insāna lafī khusr' adalah ....", options: ["Demi masa", "Sungguh manusia berada dalam kerugian", "Kecuali orang yang beriman", "Dan saling menasihati dalam kesabaran"], ans: 1 },
+            { q: "36. Waktu adalah nikmat Allah yang sangat berharga karena waktu yang telah berlalu ....", options: ["Bisa dibeli kembali", "Tidak akan pernah kembali lagi", "Dapat diulang sewaktu-waktu", "Selalu berhenti"], ans: 1 },
+            { q: "37. Contoh perbuatan yang menunjukkan amal saleh bagi seorang siswa adalah ....", options: ["Menyontek saat ujian", "Belajar tekun dan membantu teman", "Tidur saat jam pelajaran", "Bermain game seharian"], ans: 1 },
+            { q: "38. Mengingatkan teman agar melaksanakan salat tepat waktu merupakan contoh dari ....", options: ["Saling menasihati dalam kebenaran", "Memusuhi teman", "Mencampuri urusan orang", "Saling menasihati dalam kejahatan"], ans: 0 },
+            { q: "39. Sikap yang tepat saat menghadapi kesulitan belajar atau kegagalan adalah ....", options: ["Marah dan putus asa", "Bersabar dan terus berusaha", "Menyalahkan guru", "Berhenti sekolah"], ans: 1 },
+            { q: "40. Mengatur jadwal harian untuk belajar, beribadah, dan istirahat merupakan bentuk penerapan ....", options: ["Menghargai waktu", "Membuang waktu", "Pola hidup malas", "Sikap egois"], ans: 0 },
+            { q: "41. Berikut yang BUKAN merupakan syarat terhindar dari kerugian dalam Surat Al-'Asr adalah ....", options: ["Beriman kepada Allah", "Mengerjakan kebajikan (amal saleh)", "Menimbun harta kekayaan", "Saling menasihati dalam kesabaran"], ans: 2 },
+            { q: "42. Menasihati teman yang berbuat salah hendaknya dilakukan dengan cara ....", options: ["Kasar dan membentak", "Sopan, santun, dan kasih sayang", "Mengejek di depan umum", "Memukulnya"], ans: 1 },
+            { q: "43. Kerugian manusia yang dimaksud dalam Surat Al-'Asr bukan hanya kehilangan harta, melainkan ....", options: ["Kehilangan HP", "Kehilangan kesempatan berbuat baik dan pahala", "Kehilangan nilai bagus", "Kehilangan makanan"], ans: 1 },
+            { q: "44. Sikap disiplin tepat waktu saat datang ke sekolah merupakan cerminan dari ....", options: ["Pengamalan Surat Al-'Asr", "Perilaku sombong", "Rasa takut kepada teman", "Tindakan terpaksa"], ans: 0 },
+            { q: "45. Saling menasihati dalam kesabaran dapat diwujudkan dalam bentuk ....", options: ["Menyemangati teman yang sedang tertimpa musibah", "Menertawakan teman yang jatuh", "Biarkan teman menangis sendiri", "Mengompori teman agar marah"], ans: 0 },
+            { q: "46. Amal saleh yang kecil seperti tersenyum dan menyapa teman akan bernilai ibadah jika ....", options: ["Diniatkan ikhlas karena Allah Swt.", "Dipamerkan di media sosial", "Meminta imbalan uang", "Dilakukan dengan terpaksa"], ans: 0 },
+            { q: "47. Orang yang suka menunda-nunda pekerjaan rumah (PR) termasuk orang yang ....", options: ["Sangat bijaksana", "Menyia-nyiakan waktu", "Memanfaatkan waktu", "Sangat pintar"], ans: 1 },
+            { q: "48. Syarat pertama dari 4 syarat keselamatan manusia dalam Surat Al-'Asr adalah ....", options: ["Beramal saleh", "Beriman kepada Allah Swt.", "Saling menasihati", "Bersabar"], ans: 1 },
+            { q: "49. Salah satu manfaat utama dari mempelajari Surat Al-'Asr adalah ....", options: ["Menumbuhkan rasa menyayang waktu dan disiplin", "Menjadi cepat kaya", "Mendapatkan banyak mainan", "Tidak perlu belajar lagi"], ans: 0 },
+            { q: "50. Kebiasaan membaca Al-Qur'an dan mengamalkan reaches keberkahan hidup di ....", options: ["Dunia saja", "Akhirat saja", "Dunia dan akhirat", "Tidak ada di mana-mana"], ans: 2 }
+        ];
+
+        // Global State Variables
+        let currentQuestionIndex = 0;
+        let studentAnswers = new Array(questions.length).fill(null);
+        let studentName = "";
+        let studentClass = "";
+
+        // DOM Elements
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const startForm = document.getElementById('start-form');
+
+        // Form Submit Handler
+        startForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            studentName = document.getElementById('student-name').value;
+            studentClass = document.getElementById('student-class').value;
+            
+            document.getElementById('display-student').innerText = `Siswa: ${studentName} (${studentClass})`;
+            
+            startScreen.classList.remove('active');
+            quizScreen.classList.add('active');
+            
+            loadQuestion();
+        });
+
+        // Load Question Function
+        function loadQuestion() {
+            const currentQ = questions[currentQuestionIndex];
+            
+            // Set Progress Text
+            document.getElementById('question-progress').innerText = `Soal ${currentQuestionIndex + 1} dari ${questions.length}`;
+            
+            // Set Question Text
+            document.getElementById('question-text').innerText = currentQ.q;
+            
+            // Render Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            currentQ.options.forEach((opt, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                if (studentAnswers[currentQuestionIndex] === index) {
+                    optionDiv.classList.add('selected');
+                }
+                
+                optionDiv.innerText = opt;
+                optionDiv.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            // Update Navigation Buttons
+            document.getElementById('btn-prev').disabled = (currentQuestionIndex === 0);
+            
+            const nextBtn = document.getElementById('btn-next');
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.innerText = "Selesai & Kumpulkan";
+                nextBtn.style.backgroundColor = "#2e7d32";
+            } else {
+                nextBtn.innerText = "Berikutnya";
+                nextBtn.style.backgroundColor = "#2e7d32";
+            }
+        }
+
+        // Option Select Handler
+        function selectOption(optionIndex) {
+            studentAnswers[currentQuestionIndex] = optionIndex;
+            loadQuestion();
+        }
+
+        // Navigation Handlers
+        function nextQuestion() {
+            if (studentAnswers[currentQuestionIndex] === null) {
+                alert("Silakan pilih jawaban terlebih dahulu sebelum melanjutkan!");
+                return;
+            }
+
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        // Finish Quiz Handler
+        function finishQuiz() {
+            let score = 0;
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            questions.forEach((q, idx) => {
+                if (studentAnswers[idx] === q.ans) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+            });
+
+            // Score calculation (Scale 100)
+            score = (correctCount / questions.length) * 100;
+
+            // Display Results
+            document.getElementById('res-name').innerText = studentName;
+            document.getElementById('res-class').innerText = studentClass;
+            document.getElementById('score-display').innerText = Math.round(score);
+            document.getElementById('res-correct').innerText = correctCount;
+            document.getElementById('res-wrong').innerText = wrongCount;
+            
+            const statusElem = document.getElementById('res-status');
+            if (score >= 75) {
+                statusElem.innerText = "LULUS (Sangat Baik)";
+                statusElem.style.color = "green";
+                statusElem.style.fontWeight = "bold";
+            } else {
+                statusElem.innerText = "PERLU BELAJAR LAGI";
+                statusElem.style.color = "red";
+                statusElem.style.fontWeight = "bold";
+            }
+
+            quizScreen.classList.remove('active');
+            resultScreen.classList.add('active');
+        }
+
+        // Restart Quiz
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            studentAnswers = new Array(questions.length).fill(null);
+            
+            resultScreen.classList.remove('active');
+            startScreen.classList.add('active');
+            document.getElementById('start-form').reset();
+        }
+    </script>
+</body>
+</html>
